@@ -11,14 +11,17 @@ class ChatBubble extends StatelessWidget {
     return Align(
       alignment: alignment,
       child: Container(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.5
+        ),
         padding: const EdgeInsets.all(24),
         margin: const EdgeInsets.all(50),
         decoration: const BoxDecoration(
             color: Colors.grey,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12),
-              topRight: Radius.circular(12),
-              bottomRight: Radius.circular(12),
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+                bottomLeft: Radius.circular(12),
             )
         ),
         child: Column(

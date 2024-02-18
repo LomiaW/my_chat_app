@@ -1,14 +1,50 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:my_chat_app/models/chat_message_entity.dart';
 import 'package:my_chat_app/widgets/chat_bubble.dart';
 import 'package:my_chat_app/widgets/chat_input.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   ChatPage({super.key});
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  List<ChatMessageEntity> _messages = [];
+
+  _loadInitialMessages() async {
+    final response = await rootBundle.loadString('assets/mock_messages.json');
+    final List<dynamic> decodedList = jsonDecode(response) as List;
+    final List<ChatMessageEntity> chatMessages = decodedList.map((e){
+      return ChatMessageEntity.fromJson(e);
+    }).toList();
+
+    setState(() {
+      _messages = chatMessages;
+    });
+  }
+
+  onMessageSent(ChatMessageEntity entity) {
+    _messages.add(entity);
+    setState(() {
+    });
+  }
+
+  @override
+  void initState() {
+    _loadInitialMessages();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final username = ModalRoute.of(context)!.settings.arguments as String;
+
+    _loadInitialMessages();
 
     return Scaffold(
       appBar: AppBar(
@@ -28,22 +64,16 @@ class ChatPage extends StatelessWidget {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: 10,
+              itemCount: _messages.length,
               itemBuilder: (context, index) {
                 return ChatBubble(
-                  entity: ChatMessageEntity(
-                    id: '1234',
-                    text: 'Hello this is Mia123.',
-                    createdAt: DateTime.now().millisecondsSinceEpoch,
-                    author: Author(username: 'Mia123'),
-                  ),
-                  alignment: index % 2 == 0
-                    ? Alignment.centerLeft
-                    : Alignment.centerRight
-                );
+                  alignment: _messages[index].author.username == 'lomia'
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                  entity: _messages[index]);
             }),
           ),
-          ChatInput(),
+          ChatInput(onSubmit: onMessageSent),
         ],
       ),
     );
