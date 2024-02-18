@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_chat_app/models/chat_message_entity.dart';
@@ -14,23 +13,27 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+
   List<ChatMessageEntity> _messages = [];
 
   _loadInitialMessages() async {
-    final response = await rootBundle.loadString('assets/mock_messages.json');
-    final List<dynamic> decodedList = jsonDecode(response) as List;
-    final List<ChatMessageEntity> chatMessages = decodedList.map((e){
-      return ChatMessageEntity.fromJson(e);
-    }).toList();
+    rootBundle.loadString('assets/mock_messages.json').then((response) {
+      final List<dynamic> decodedList = jsonDecode(response) as List;
 
-    setState(() {
-      _messages = chatMessages;
+      final List<ChatMessageEntity> chatMessages = decodedList.map((e) {
+        return ChatMessageEntity.fromJson(e);
+      }).toList();
+
+      setState(() {
+        _messages = chatMessages;
+      });
     });
   }
 
   onMessageSent(ChatMessageEntity entity) {
     _messages.add(entity);
     setState(() {
+
     });
   }
 
@@ -47,6 +50,7 @@ class _ChatPageState extends State<ChatPage> {
     _loadInitialMessages();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Hi $username!'),
         backgroundColor: Colors.transparent,

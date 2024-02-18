@@ -16,10 +16,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'My Chat App',
       theme: ThemeData(
-          appBarTheme: AppBarTheme(
-            backgroundColor: BrandColor.primaryColor,
-            foregroundColor: Colors.black,
-          )
+        canvasColor: Colors.transparent,
+        appBarTheme: AppBarTheme(
+          backgroundColor: BrandColor.primaryColor,
+          foregroundColor: Colors.black,
+        )
       ),
       home: LoginPage(),
       routes: {

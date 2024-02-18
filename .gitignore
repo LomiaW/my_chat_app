@@ -9,6 +9,9 @@
 .history
 .svn/
 migrate_working_dir/
+# env api keys
+*.env
+env.g.dart
 
 # IntelliJ related
 *.iml
