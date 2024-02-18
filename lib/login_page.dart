@@ -2,29 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:my_chat_app/utils/spaces.dart';
 import 'package:my_chat_app/widgets/login_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:social_media_buttons/social_media_buttons.dart';
 
 class LoginPage extends StatelessWidget {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _mainUrl = "https://github.com/LomiaW";
+  final _linkedinUrl = "https://www.linkedin.com/in/lomiawu/";
+
   LoginPage({super.key});
 
-  final _formKey = GlobalKey<FormState>();
   void loginUser(context) {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      print('Username: ' + usernameController.text);
-      print('Password: ' + passwordController.text);
-
       // Navigate to ChatPage on successful login
       Navigator.pushReplacementNamed(context, '/chat',
         arguments: usernameController.text
       );
-
-      print('Login successful!');
     } else {
-      print('Login not successful!');
+      throw Exception("Login failed!");
     }
   }
-
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -99,19 +97,24 @@ class LoginPage extends StatelessWidget {
             verticalSpacing(24),
             GestureDetector(
               onTap: () async {
-                // TODO: Navigate to browser
-                print('Link clicked!');
-                if (!await launchUrl(Uri.parse('https://github.com/LomiaW'))) {
+                if (!await launchUrl(Uri.parse(_mainUrl))) {
                   throw Exception('Could not launch url');
                 }
               },
-              child: const Column(
+              child: Column(
                 children: [
-                  Text('Find me on'),
-                  Text('https://github.com/LomiaW'),
+                  const Text('Find me on'),
+                  Text(_mainUrl),
                 ],
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SocialMediaButton.github(url: _mainUrl),
+                SocialMediaButton.linkedin(url: _linkedinUrl),
+              ],
+            )
           ],
         ),
       ),
