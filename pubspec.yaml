@@ -41,6 +41,8 @@ dependencies:
   json_annotation: ^4.8.0
   envied: ^0.5.3
   http: any
+  provider: ^6.1.1
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
